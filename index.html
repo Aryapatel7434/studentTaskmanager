@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Task Manager</title>
+</head>
+<body>
+<h2>Task Manager</h2>
+
+<input type="text" id="task" placeholder="Enter task">
+<button onclick="addTask()">Add</button>
+
+<ul id="list"></ul>
+
+<script>
+function addTask() {
+    let task = document.getElementById("task").value;
+    fetch("http://localhost:8080/add?task=" + task)
+        .then(res => res.text())
+        .then(data => {
+            let arr = data.replace("[","").replace("]","").split(",");
+            let ul = document.getElementById("list");
+            ul.innerHTML = "";
+            arr.forEach(t => {
+                if(t.trim()){
+                    let li = document.createElement("li");
+                    li.innerText = t;
+                    ul.appendChild(li);
+                }
+            });
+        });
+}
+</script>
+</body>
+</html>
